@@ -39,7 +39,10 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Valid JoinForm joinForm) {
         memberService.join(joinForm.getUsername(), joinForm.getPassword());
-
         return "redirect:/";
+    }
+    @GetMapping("/login")
+    public String showLogin() {
+        return "usr/member/login";
     }
 }
