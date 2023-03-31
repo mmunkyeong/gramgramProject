@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
+import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -9,17 +10,19 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
-
     private final MemberService memberService;
+
     @PreAuthorize("isAnonymous()")
     @GetMapping("/join")
     public String showJoin() {
@@ -41,6 +44,7 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Valid JoinForm joinForm) {
         memberService.join(joinForm.getUsername(), joinForm.getPassword());
+
         return "redirect:/";
     }
 
@@ -51,8 +55,8 @@ public class MemberController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/me") //내정보
-    public String showMe() {
+    @GetMapping("/me")
+    public String showMe(Principal principal, Model model) {
         return "usr/member/me";
     }
 }
