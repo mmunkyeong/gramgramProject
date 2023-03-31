@@ -49,4 +49,10 @@ public class MemberController {
     public String showLogin() {
         return "usr/member/login";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me") //내정보
+    public String showMe() {
+        return "usr/member/me";
+    }
 }
